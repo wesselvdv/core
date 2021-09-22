@@ -45,10 +45,12 @@ describe("Effect", () => {
             cb(T.unit)
           }, ms)
 
-          return T.succeedWith(() => {
-            f(fib.id.seqNumber)
-            clearTimeout(timeout)
-          })
+          return E.left(
+            T.succeedWith(() => {
+              f(fib.id.seqNumber)
+              clearTimeout(timeout)
+            })
+          )
         })
       )
     }
@@ -157,28 +159,34 @@ describe("Effect", () => {
           const t = setTimeout(() => {
             cb(T.succeed(1))
           }, 5000)
-          return T.succeedWith(() => {
-            a()
-            clearTimeout(t)
-          })
+          return E.left(
+            T.succeedWith(() => {
+              a()
+              clearTimeout(t)
+            })
+          )
         }),
         T.effectAsyncInterrupt<unknown, never, number>((cb) => {
           const t = setTimeout(() => {
             cb(T.succeed(2))
           }, 100)
-          return T.succeedWith(() => {
-            b()
-            clearTimeout(t)
-          })
+          return E.left(
+            T.succeedWith(() => {
+              b()
+              clearTimeout(t)
+            })
+          )
         }),
         T.effectAsyncInterrupt<unknown, never, number>((cb) => {
           const t = setTimeout(() => {
             cb(T.succeed(3))
           }, 5000)
-          return T.succeedWith(() => {
-            c()
-            clearTimeout(t)
-          })
+          return E.left(
+            T.succeedWith(() => {
+              c()
+              clearTimeout(t)
+            })
+          )
         })
       ],
       "wait"
@@ -202,28 +210,34 @@ describe("Effect", () => {
         const t = setTimeout(() => {
           cb(T.succeed(1))
         }, 5000)
-        return T.succeedWith(() => {
-          a()
-          clearTimeout(t)
-        })
+        return E.left(
+          T.succeedWith(() => {
+            a()
+            clearTimeout(t)
+          })
+        )
       }),
       T.effectAsyncInterrupt<unknown, never, number>((cb) => {
         const t = setTimeout(() => {
           cb(T.succeed(2))
         }, 100)
-        return T.succeedWith(() => {
-          b()
-          clearTimeout(t)
-        })
+        return E.left(
+          T.succeedWith(() => {
+            b()
+            clearTimeout(t)
+          })
+        )
       }),
       T.effectAsyncInterrupt<unknown, never, number>((cb) => {
         const t = setTimeout(() => {
           cb(T.succeed(3))
         }, 5000)
-        return T.succeedWith(() => {
-          c()
-          clearTimeout(t)
-        })
+        return E.left(
+          T.succeedWith(() => {
+            c()
+            clearTimeout(t)
+          })
+        )
       })
     ])
 
@@ -242,10 +256,12 @@ describe("Effect", () => {
         const timer = setTimeout(() => {
           cb(T.succeed(1))
         }, 2000)
-        return T.succeedWith(() => {
-          f()
-          clearTimeout(timer)
-        })
+        return E.left(
+          T.succeedWith(() => {
+            f()
+            clearTimeout(timer)
+          })
+        )
       }),
       T.timeout(100),
       T.runPromise
@@ -261,10 +277,12 @@ describe("Effect", () => {
         const timer = setTimeout(() => {
           cb(T.succeed(1))
         }, 2000)
-        return T.succeedWith(() => {
-          f()
-          clearTimeout(timer)
-        })
+        return E.left(
+          T.succeedWith(() => {
+            f()
+            clearTimeout(timer)
+          })
+        )
       }),
       T.timeoutFail(100, () => "timeout"),
       T.result,

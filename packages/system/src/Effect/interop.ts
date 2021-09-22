@@ -1,6 +1,7 @@
 // ets_tracing: off
 
 import * as Async from "../Async"
+import * as E from "../Either"
 import * as IO from "../IO"
 import { accessM, succeed, succeedWith } from "./core"
 import type { Effect } from "./effect"
@@ -33,9 +34,11 @@ export function fromAsync<R, E, A>(
           }
         }
       })
-      return succeedWith(() => {
-        cancel()
-      })
+      return E.left(
+        succeedWith(() => {
+          cancel()
+        })
+      )
     }, __trace)
   )
 }

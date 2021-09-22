@@ -1,6 +1,6 @@
 // ets_tracing: off
 
-import { effectMaybeAsyncInterruptBlockingOn } from "../Effect/effectMaybeAsyncInterrupt"
+import { effectAsyncInterruptBlockingOn } from "../Effect/effectAsyncInterrupt"
 import * as E from "../Either"
 import { interruptJoiner } from "./interruptJoiner"
 import type { Promise } from "./promise"
@@ -11,7 +11,7 @@ import { Pending } from "./state"
  * until the result is available.
  */
 function wait<E, A>(promise: Promise<E, A>) {
-  return effectMaybeAsyncInterruptBlockingOn<unknown, E, A>((k) => {
+  return effectAsyncInterruptBlockingOn<unknown, E, A>((k) => {
     const state = promise.state.get
 
     switch (state._tag) {

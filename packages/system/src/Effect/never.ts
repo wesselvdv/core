@@ -1,5 +1,6 @@
 // ets_tracing: off
 
+import * as E from "../Either"
 import { succeedWith, suspend } from "./core"
 import { effectAsyncInterrupt } from "./effectAsyncInterrupt"
 
@@ -12,8 +13,10 @@ export const never = suspend(() =>
     const interval = setInterval(() => {
       //
     }, 60000)
-    return succeedWith(() => {
-      clearInterval(interval)
-    })
+    return E.left(
+      succeedWith(() => {
+        clearInterval(interval)
+      })
+    )
   })
 )

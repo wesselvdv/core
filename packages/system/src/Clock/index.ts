@@ -11,6 +11,7 @@ import { succeedWith, unit } from "../Effect/core"
 import type { Effect, UIO } from "../Effect/effect"
 import { effectAsyncInterrupt } from "../Effect/effectAsyncInterrupt"
 import { accessService, accessServiceM, provideServiceM } from "../Effect/has"
+import * as E from "../Either"
 import type { Has, HasTag, Tag } from "../Has"
 import { tag } from "../Has"
 
@@ -46,9 +47,11 @@ export class LiveClock extends Clock {
         cb(unit)
       }, ms)
 
-      return succeedWith(() => {
-        clearTimeout(timeout)
-      })
+      return E.left(
+        succeedWith(() => {
+          clearTimeout(timeout)
+        })
+      )
     }, trace)
 }
 
