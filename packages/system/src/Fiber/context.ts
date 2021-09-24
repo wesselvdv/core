@@ -357,7 +357,10 @@ export class FiberContext<E, A> implements Fiber.Runtime<E, A> {
 
   notifyObservers(v: Exit.Exit<E, A>, observers: Callback<never, Exit.Exit<E, A>>[]) {
     const result = Exit.succeed(v)
-    observers.forEach((k) => k(result))
+    observers
+      .slice(0)
+      .reverse()
+      .forEach((k) => k(result))
   }
 
   observe0(k: Callback<never, Exit.Exit<E, A>>): O.Option<T.UIO<Exit.Exit<E, A>>> {
@@ -959,11 +962,11 @@ export class FiberContext<E, A> implements Fiber.Runtime<E, A> {
                       // Error not caught, stack is empty:
                       const cause = () => {
                         const interrupted = this.state.get.interrupted
-                        const causeAndInterrupt = Cause.contains(interrupted)(
+                        const causeAndInterrupt = !Cause.contains(interrupted)(
                           maybeRedactedCause
                         )
-                          ? maybeRedactedCause
-                          : Cause.then(maybeRedactedCause, interrupted)
+                          ? Cause.then(maybeRedactedCause, interrupted)
+                          : maybeRedactedCause
 
                         return causeAndInterrupt
                       }
